@@ -1,14 +1,11 @@
 body {
   background-color: black;
   overflow: hidden;
+
+  overflow-y: scroll;
 }
 
 #ireallywannastayatyourhousevideo {
   height: 100vh;
   width: 100vw;
-}
-
-.Dawntrail-div {
-  background-color: white;
-  color: burlywood;
 }
