@@ -23,8 +23,6 @@ const Dawntrail = () => {
   //          overlay / draw a blueish tinged circle
 
   const displayMap = () => {
-    if (currMap === null) return;
-
     //console.log("hi");
     const img = maps.find((m) => m.name == currMap);
     return MapDisplay(img);

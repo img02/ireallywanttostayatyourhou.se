@@ -21,6 +21,7 @@ const MapDisplay = (map) => {
   };
 
   useEffect(() => {
+    if (map === null || map === undefined) return;
     //console.log(getData);
     drawCircles(combine);
   }, [getData]);
@@ -204,42 +205,44 @@ const MapDisplay = (map) => {
     console.log(getData);
   };
 
-  return (
-    <div id="map-image-div">
-      <div id="map-top-bar">
-        displaying selected map image: {map.name}
-        <button
-          onClick={() => {
-            setCombine(!combine);
-            drawCanvas();
-          }}
-        >
-          toggle clusters
-        </button>
-        <button onClick={test}>toconsole</button>
-        <button id="save-map-image-button" onClick={saveImage}>
-          save
-        </button>
-      </div>
-      <div id="map-coordinates">{`(${getX.toFixed(2)}, ${getY.toFixed(
-        2
-      )})`}</div>
+  if (map === null || map === undefined) return;
+  else
+    return (
+      <div id="map-image-div">
+        <div id="map-top-bar">
+          displaying selected map image: {map.name}
+          <button
+            onClick={() => {
+              setCombine(!combine);
+              drawCanvas();
+            }}
+          >
+            toggle clusters
+          </button>
+          <button onClick={test}>toconsole</button>
+          <button id="save-map-image-button" onClick={saveImage}>
+            save
+          </button>
+        </div>
+        <div id="map-coordinates">{`(${getX.toFixed(2)}, ${getY.toFixed(
+          2
+        )})`}</div>
 
-      <canvas
-        id="map-canvas"
-        height={2048}
-        width={2048}
-        onMouseMove={setCoords}
-      ></canvas>
-      <img
-        id="map-image"
-        src={map.src}
-        onLoad={async () => await drawCanvas()}
-        draggable="false"
-      ></img>
-      <img id="map-image-credit" src={Credit} draggable="false"></img>
-    </div>
-  );
+        <canvas
+          id="map-canvas"
+          height={2048}
+          width={2048}
+          onMouseMove={setCoords}
+        ></canvas>
+        <img
+          id="map-image"
+          src={map.src}
+          onLoad={async () => await drawCanvas()}
+          draggable="false"
+        ></img>
+        <img id="map-image-credit" src={Credit} draggable="false"></img>
+      </div>
+    );
 };
 
 export default MapDisplay;
