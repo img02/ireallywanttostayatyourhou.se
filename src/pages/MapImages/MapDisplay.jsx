@@ -1,3 +1,4 @@
+import { connectStorageEmulator } from "firebase/storage";
 import Credit from "../../assets/images/credit.png";
 
 import database from "../../firebase/firebase-firestore";
@@ -9,27 +10,127 @@ const MapDisplay = (map) => {
   const imgsize = document.documentElement.clientWidth * sizeModifier;
   const conversionRatePx = 2048 / 41;
 
+  const [combine, setCombine] = useState(true);
+
   const [getData, setData] = useState([]);
   const fetchData = async () => {
     const db = database();
-    setData(await db.getMapData(map));
-    //console.log(getData);
+    setData(
+      (await db.getMapData(map)).sort((a, b) => a.position.x - b.position.x)
+    );
   };
 
   useEffect(() => {
-    console.log(getData);
-    drawCircles();
+    //console.log(getData);
+    drawCircles(combine);
   }, [getData]);
 
-  //todo idk take in array of positions and draw cirles in a loop
-  // maybe have another fn first that gets averages of pos in a 0.5-1 coord radius
-  const drawCircles = () => {
+  const processSpawnPoints = () => {
+    // without 'cloning' array, modifying getData directly will not cause rerender and could cause stale data to be displayed in the future? depending on if it's used elsewhere
+    let data = getData.slice();
+    let remaining = [];
+
+    //go thru x
+    let avg = [];
+    let comparer = data[0];
+    let cluster = [data[0]];
+
+    let j = 0;
+    while (data.length > 0) {
+      if (data.length == 1) {
+        cluster.push(data[0]);
+      }
+
+      j++;
+      //console.log(j);
+      if (j > 70) break;
+
+      for (let i = 1; i < data.length; i++) {
+        if (j > 70) break;
+
+        if (Math.abs(data[i].position.x - comparer.position.x) <= 1) {
+          if (Math.abs(data[i].position.y - comparer.position.y) <= 1) {
+            cluster.push(data[i]);
+          } else {
+            remaining.push(data[i]);
+          }
+        } else {
+          remaining.push(...data.slice(i));
+          break;
+        }
+        /*
+        //if within 1 coordinate        
+        if (Math.abs(data[i].position.x - base.position.x) < 1) {
+          if (Math.abs(data[i].position.y - base.position.y) < 1) {
+            toAvg.push(data[i]);
+            if (i == data.length - 1) {
+              data = [];
+            }
+          } else {
+            remaining.push(data[i]);
+          }
+        } else {
+          //rebase
+          avg.push(calcAverage(toAvg));
+          toAvg = [];
+
+          remaining.push(...data.slice(i));
+          data = remaining.slice();
+          remaining = [];
+          if (data.length > 0) base = data[0];
+
+          break; //and restart forloop with new remaining.
+        }
+        if (data == []) {
+          avg.push(calcAverage(toAvg));
+          toAvg = [];
+
+          remaining.push(...data.slice(i));
+          data = remaining.slice();
+          remaining = [];
+          if (data.length > 0) base = data[0];
+        }
+          */
+      }
+
+      avg.push(calcAverage(cluster));
+      data = remaining.slice();
+      if (data.length > 0) {
+        cluster = [data[0]];
+        comparer = data[0];
+      }
+      remaining = [];
+    }
+
+    //console.log(avg);
+    return avg;
+  };
+
+  const calcAverage = (cluster) => {
+    //console.log(cluster.length);
+    let x = 0;
+    let y = 0;
+    let count = 0;
+
+    cluster.forEach((c) => {
+      x += parseFloat(c.position.x);
+      y += parseFloat(c.position.y);
+      count++;
+    });
+    //console.log(`${x / count}, ${y / count}`);
+    return { position: { x: x / count, y: y / count } };
+  };
+
+  //draWs the spawn points from db
+  const drawCircles = (combine) => {
     const canvas = document.getElementById("map-canvas");
     const context = canvas.getContext("2d");
 
-    //console.log("start draw circle");
+    let coords = getData.slice();
 
-    getData.forEach((point) => {
+    if (combine) coords = processSpawnPoints();
+
+    coords.forEach((point) => {
       const x = point.position.x - 1;
       const y = point.position.y - 1;
 
@@ -62,8 +163,8 @@ const MapDisplay = (map) => {
 
   // let x = useRef(0);
   // let y = useRef(0);
-  const [useX, setX] = useState(0);
-  const [useY, setY] = useState(0);
+  const [getX, setX] = useState(0);
+  const [getY, setY] = useState(0);
 
   const setCoords = (e) => {
     const canvas = document.getElementById("map-canvas");
@@ -78,6 +179,11 @@ const MapDisplay = (map) => {
         ((e.nativeEvent.clientY - rect.top) / 24.9 + 1 + Number.EPSILON) * 100
       ) / 100
     ); //canvas scale 0.5
+
+    const coordsDiv = document.getElementById("map-coordinates");
+    coordsDiv.style.position = "absolute";
+    coordsDiv.style.top = `${e.nativeEvent.clientY - 40}px`;
+    coordsDiv.style.left = `${e.nativeEvent.clientX - 50}px`;
   };
 
   //todo maybe make a button that can save all images?
@@ -97,16 +203,27 @@ const MapDisplay = (map) => {
   const test = () => {
     console.log(getData);
   };
+
   return (
     <div id="map-image-div">
       <div id="map-top-bar">
         displaying selected map image: {map.name}
-        <button onClick={test}>test</button>
+        <button
+          onClick={() => {
+            setCombine(!combine);
+            drawCanvas();
+          }}
+        >
+          toggle clusters
+        </button>
+        <button onClick={test}>toconsole</button>
         <button id="save-map-image-button" onClick={saveImage}>
           save
         </button>
       </div>
-      <div id="map-coordinates">{`(${useX}, ${useY})`}</div>
+      <div id="map-coordinates">{`(${getX.toFixed(2)}, ${getY.toFixed(
+        2
+      )})`}</div>
 
       <canvas
         id="map-canvas"
