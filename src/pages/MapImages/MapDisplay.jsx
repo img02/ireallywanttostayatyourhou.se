@@ -159,6 +159,9 @@ const MapDisplay = (map) => {
     const context = canvas.getContext("2d");
     context.drawImage(document.getElementById("map-image"), 0, 0);
     context.drawImage(document.getElementById("map-image-credit"), 50, 1900);
+    context.fillStyle = `rgba(45, 42, 136, 0.85)`; // blue
+    context.font = "bold 50px roboto mono";
+    context.fillText(`${map.name.split("_").join(" ")}`, 1550, 80);
     await fetchData();
   };
 

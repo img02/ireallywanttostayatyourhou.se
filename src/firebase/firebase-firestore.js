@@ -81,7 +81,7 @@ const database = () => {
     if (data.currTime.length > 30) return false;
 
     if (data.playerid === null) return false;
-    if (data.playerid.length > 30) return false;
+    if (data.playerid.length > 80) return false;
     return true;
   };
 
