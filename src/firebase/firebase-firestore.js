@@ -57,34 +57,40 @@ const database = () => {
 
   //todo : better validation
   const validateData = (data) => {
-    if (data.mapname === null) return false;
+    if (data === null || data === undefined) return false;
+
+    if (data.mapname == null) return false;
     if (data.mapname.length > 30) return false;
 
-    if (data.mobid === null) return false;
+    if (data.mobid == null) return false;
     if (data.mobid.toString().length > 4) return false;
 
-    if (data.name === null) return false;
+    if (data.name == null) return false;
     if (data.name.length > 20) return false;
 
-    if (data.position === null) return false;
-    if (data.position.x.toString().length > 4 === null) return false;
-    if (data.position.y.toString().length > 4 === null) return false;
-    if (data.position.z.toString().length > 4 === null) return false;
+    if (data.position == null) return false;
+    if (data.position.x == null) return false;
+    if (data.position.y == null) return false;
+    if (data.position.z == null) return false;
 
-    if (data.mapid === null) return false;
+    if (data.position.x.toString().length > 4) return false;
+    if (data.position.y.toString().length > 4) return false;
+    if (data.position.z.toString().length > 4) return false;
+
+    if (data.mapid == null) return false;
     if (data.mapid.toString().length > 4) return false;
 
-    if (data.rank === null) return false;
+    if (data.rank == null) return false;
     if (data.rank.length > 2) return false;
 
-    if (data.currTime === null) return false;
+    if (data.currTime == null) return false;
     if (data.currTime.length > 30) return false;
 
-    if (data.playerid === null) return false;
+    if (data.playerid == null) return false;
     if (data.playerid.length > 80) return false;
+
     return true;
   };
-
   //todo pull data from db, print to console, once verified, pass to MapDisplay to process and draw, also prob have a button or something that gives copy paste friendly json for hh
   const getMapData = async (data) => {
     if (data == null) return null;

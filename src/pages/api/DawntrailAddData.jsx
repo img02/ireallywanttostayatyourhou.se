@@ -16,12 +16,12 @@ const DawntrailAddData = () => {
     mapid: searchParams.get("mapid"),
     rank: searchParams.get("rank"),
     currTime: new Date(Date.now()).toUTCString(),
-    playerid: searchParams.get("userid"),
+    playerid: searchParams.get("playerId"),
   };
 
-  //127.0.0.1:5173/#/api/hunts/dawntrail?mobid=123&name=hello&x=1&y=2&z=3&mapid=456&rank=B&userid=fff45&map=limsa
+  //127.0.0.1:5173/#/api/hunts/dawntrail?mobid=123&name=hello&x=1&y=2&z=3&mapid=456&rank=B&playerId=fff45&map=limsa
 
-  //127.0.0.1:5173/#/api/hunts/dawntrail?mobid=123&name=hello&z=3&mapid=148&rank=A&userid=TEST&map=Central Shroud&x=28.75&y=14.45
+  //127.0.0.1:5173/#/api/hunts/dawntrail?mobid=123&name=hello&z=3&mapid=148&rank=A&playerId=TEST&map=Central Shroud&x=28.75&y=14.45
 
   const db = database();
   db.addDawntrailHunt(data);

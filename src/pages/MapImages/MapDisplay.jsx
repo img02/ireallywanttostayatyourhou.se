@@ -49,8 +49,8 @@ const MapDisplay = (map) => {
       for (let i = 1; i < data.length; i++) {
         if (j > 70) break;
 
-        if (Math.abs(data[i].position.x - comparer.position.x) <= 1) {
-          if (Math.abs(data[i].position.y - comparer.position.y) <= 1) {
+        if (Math.abs(data[i].position.x - comparer.position.x) <= 0.6) {
+          if (Math.abs(data[i].position.y - comparer.position.y) <= 0.6) {
             cluster.push(data[i]);
           } else {
             remaining.push(data[i]);
