@@ -1,4 +1,3 @@
-import { connectStorageEmulator } from "firebase/storage";
 import Credit from "../../assets/images/credit.png";
 
 import database from "../../firebase/firebase-firestore";
@@ -13,6 +12,8 @@ const MapDisplay = (map) => {
   const [combine, setCombine] = useState(true);
 
   const [getData, setData] = useState([]);
+  const [getAvg, setAvg] = useState([]);
+
   const fetchData = async () => {
     const db = database();
     setData(
@@ -25,6 +26,8 @@ const MapDisplay = (map) => {
     //console.log(getData);
     drawCircles(combine);
   }, [getData]);
+
+  let averagedCoords = [];
 
   const processSpawnPoints = () => {
     // without 'cloning' array, modifying getData directly will not cause rerender and could cause stale data to be displayed in the future? depending on if it's used elsewhere
@@ -103,7 +106,9 @@ const MapDisplay = (map) => {
       remaining = [];
     }
 
-    //console.log(avg);
+    setAvg(avg);
+
+    // console.log(averagedCoords);
     return avg;
   };
 
@@ -208,12 +213,31 @@ const MapDisplay = (map) => {
     console.log(getData);
   };
 
+  const copyAvgAsJson = () => {
+    const averagedCoords = getAvg;
+    let json = `{"MapName": "${map.name.split("_").join(" ")}",
+    "MapID": ${map.id},
+    "Positions": [`;
+    for (let i = 0; i < averagedCoords.length; i++) {
+      const c = averagedCoords[i];
+      json =
+        json +
+        `{"X": ${c.position.x.toFixed(2)}, "Y": ${c.position.y.toFixed(
+          2
+        )}, "Taken": false}`;
+      if (i < averagedCoords.length - 1) json = json + ",";
+    }
+    json = `${json}], "Recording": false},`;
+    navigator.clipboard.writeText(json);
+  };
+
   if (map === null || map === undefined) return;
   else
     return (
       <div id="map-image-div">
         <div id="map-top-bar">
           displaying selected map image: {map.name}
+          <button onClick={copyAvgAsJson}>to hh json</button>
           <button
             onClick={() => {
               setCombine(!combine);
