@@ -96,7 +96,9 @@ const database = () => {
     if (data == null) return null;
     if (data.name == null) return null;
 
-    const name = data.name.split("_").join(" ");
+    let name = data.name.split("_").join(" ");
+    if (name === "The Raktika Greatwood") name = "The Rak'tika Greatwood"; //weird name
+
     const id = data.id;
 
     //todo remove
