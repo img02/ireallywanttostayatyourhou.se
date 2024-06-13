@@ -5,7 +5,7 @@ import Central_Shroud_orig from "./assets/images/Central_Shroud-Orig.jpg";
 import Central_Thanalan from "./assets/images/Central_Thanalan.jpg";
 import Upper_La_Noscea from "./assets/images/Upper_La_Noscea.jpg";
 import Thavnair from "./assets/images/Thavnair.jpg";
-import The_Raktika_Greatwood from "./assets/images/The_Rak'The_Raktika_Greatwood.jpg";
+import The_Raktika_Greatwood from "./assets/images/The_Rak'tika_Greatwood.jpg";
 
 const MapData = [
   { name: "Amh_Araeng", src: Amh_Araeng, id: 815 },
