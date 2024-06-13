@@ -6,6 +6,7 @@ import Central_Thanalan from "./assets/images/Central_Thanalan.jpg";
 import Upper_La_Noscea from "./assets/images/Upper_La_Noscea.jpg";
 import Thavnair from "./assets/images/Thavnair.jpg";
 import The_Raktika_Greatwood from "./assets/images/The_Rak'tika_Greatwood.jpg";
+import Garlemald from "./assets/images/Garlemald.jpg";
 
 const MapData = [
   { name: "Amh_Araeng", src: Amh_Araeng, id: 815 },
@@ -16,6 +17,7 @@ const MapData = [
   { name: "Upper_La_Noscea", src: Upper_La_Noscea, id: 139 },
   { name: "Thavnair", src: Thavnair, id: 957 },
   { name: "The_Raktika_Greatwood", src: The_Raktika_Greatwood, id: 817 },
+  { name: "Garlemald", src: Garlemald, id: 817 },
 ];
 
 export default MapData;

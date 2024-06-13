@@ -91,7 +91,13 @@ const database = () => {
 
     return true;
   };
-  //todo pull data from db, print to console, once verified, pass to MapDisplay to process and draw, also prob have a button or something that gives copy paste friendly json for hh
+
+  /***
+   *  Returns map spawn position data, excluding SS ranks (SS and SS minions)
+   *
+   *
+   *
+   */
   const getMapData = async (data) => {
     if (data == null) return null;
     if (data.name == null) return null;
@@ -108,11 +114,19 @@ const database = () => {
     // https://firebase.google.com/docs/firestore/query-data/get-data#get_all_documents_in_a_collection
 
     const querySnapshot = await getDocs(collection(db, name));
-    const results = querySnapshot.docs.map((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      //console.log(doc.id, " => ", doc.data());
-      return doc.data();
-    });
+    const results = querySnapshot.docs
+      .filter((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        const id = doc.data().mobId;
+        if (id == 8916 || id == 8915 || id == 10615 || id == 10616)
+          // ss mob forgiven, ker
+          return false;
+        return true;
+      })
+      .map((doc) => {
+        //console.log(doc.id, " => ", doc.data());
+        return doc.data();
+      });
 
     //todo debug delete later idk
     // results.forEach((doc) => {
