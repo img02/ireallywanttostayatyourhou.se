@@ -15,6 +15,7 @@ const MapDisplay = (map) => {
   const [getAvg, setAvg] = useState([]);
 
   const fetchData = async () => {
+    console.log("fetching");
     const db = database();
     setData(
       (await db.getMapData(map)).sort((a, b) => a.position.x - b.position.x)
@@ -25,9 +26,16 @@ const MapDisplay = (map) => {
     if (map === null || map === undefined) return;
     //console.log(getData);
     drawCircles(combine);
+    drawDataPointsCountText();
   }, [getData]);
 
-  let averagedCoords = [];
+  const drawDataPointsCountText = () => {
+    const canvas = document.getElementById("map-canvas");
+    const context = canvas.getContext("2d");
+    context.fillStyle = `rgba(45, 42, 136, 0.85)`;
+    context.font = "bold 18px roboto mono";
+    context.fillText(`${getData.length} data points`, 140, 1994);
+  };
 
   const processSpawnPoints = () => {
     // without 'cloning' array, modifying getData directly will not cause rerender and could cause stale data to be displayed in the future? depending on if it's used elsewhere
