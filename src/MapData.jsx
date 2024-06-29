@@ -24,6 +24,12 @@ const MapData = [
   { name: "Thavnair", src: Thavnair, id: 957 },
   { name: "The_Raktika_Greatwood", src: The_Raktika_Greatwood, id: 817 },
   { name: "Garlemald", src: Garlemald, id: 817 },
+  { name: "Urqopacha", src: Urqopacha, id: 1187 },
+  { name: "Kozamauka", src: Kozamauka, id: 1188 },
+  { name: "Yak_Tel", src: Yak_Tel, id: 1189 },
+  { name: "Shaaloani", src: Shaaloani, id: 1190 },
+  { name: "Heritage_Found", src: Heritage_Found, id: 1191 },
+  { name: "Living_Memory", src: Living_Memory, id: 1192 },
 ];
 
 const zzMapData = [
