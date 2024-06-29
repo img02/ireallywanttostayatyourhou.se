@@ -148,6 +148,11 @@ const MapDisplay = (map) => {
       const x = point.position.x - 1;
       const y = point.position.y - 1;
 
+      // SS rank ids, irrelevant to A,B,S spawn points
+      if (point.mobId == 13406 || point.mobId == 13407) {
+        return;
+      }
+
       //console.log(`hello : ${x}, ${y}`);
 
       context.strokeStyle = `rgba(0, 0, 0, 0.85)`;
