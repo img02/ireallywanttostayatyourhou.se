@@ -14,7 +14,7 @@ import Shaaloani from "./assets/images/Shaaloani-data.jpg";
 import Urqopacha from "./assets/images/Urqopacha-data.jpg";
 import Yak_Tel from "./assets/images/Yak_T'el-data.jpg";
 
-const TestData = [
+const MapData = [
   { name: "Amh_Araeng", src: Amh_Araeng, id: 815 },
   { name: "Azys_Lla", src: Azys_Lla, id: 402 },
   { name: "Central_Shroud", src: Central_Shroud, id: 148 },
@@ -26,7 +26,7 @@ const TestData = [
   { name: "Garlemald", src: Garlemald, id: 817 },
 ];
 
-const MapData = [
+const zzMapData = [
   { name: "Urqopacha", src: Urqopacha, id: 1187 },
   { name: "Kozamauka", src: Kozamauka, id: 1188 },
   { name: "Yak_Tel", src: Yak_Tel, id: 1189 },
