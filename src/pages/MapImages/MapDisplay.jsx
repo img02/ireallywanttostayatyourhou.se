@@ -20,6 +20,7 @@ const MapDisplay = (map) => {
     setData(
       (await db.getMapData(map)).sort((a, b) => a.position.x - b.position.x)
     );
+    // names with apostrophes in them...
   };
 
   useEffect(() => {
@@ -179,7 +180,13 @@ const MapDisplay = (map) => {
     context.drawImage(document.getElementById("map-image-credit"), 50, 1900);
     context.fillStyle = `rgba(45, 42, 136, 0.85)`; // blue
     context.font = "bold 50px roboto mono";
-    context.fillText(`${map.name.split("_").join(" ")}`, 1550, 80);
+
+    let name = map.name.split("_").join(" ");
+    if (name === "The Raktika Greatwood") name = "The Rak'tika Greatwood";
+    if (name === "Kozamauka") name = "Kozama'uka";
+    if (name === "Yak Tel") name = "Yak T'el";
+
+    context.fillText(name, 1550, 80);
     await fetchData();
   };
 

@@ -102,7 +102,7 @@ const database = () => {
     if (data == null) return null;
     if (data.name == null) return null;
 
-    // names with backticks in them...
+    // names with apostrophes in them...
     let name = data.name.split("_").join(" ");
     if (name === "The Raktika Greatwood") name = "The Rak'tika Greatwood";
     if (name === "Kozamauka") name = "Kozama'uka";
