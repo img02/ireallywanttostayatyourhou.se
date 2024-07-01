@@ -3,7 +3,7 @@ import Credit from "../../assets/images/credit.png";
 import database from "../../firebase/firebase-firestore";
 import { useEffect, useState } from "react";
 
-const clusterDist = 0.7;
+const clusterDist = 1;
 
 const MapDisplay = (map) => {
   //TODO replace height width
