@@ -215,8 +215,8 @@ const MapDisplay = (map) => {
 
     const coordsDiv = document.getElementById("map-coordinates");
     coordsDiv.style.position = "absolute";
-    coordsDiv.style.top = `${e.nativeEvent.clientY - 40}px`;
-    coordsDiv.style.left = `${e.nativeEvent.clientX - 50}px`;
+    coordsDiv.style.top = `${e.pageY - 40}px`;
+    coordsDiv.style.left = `${e.pageX - 50}px`;
   };
 
   //todo maybe make a button that can save all images?
