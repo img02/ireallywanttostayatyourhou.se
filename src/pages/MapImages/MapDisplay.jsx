@@ -40,6 +40,20 @@ const MapDisplay = (map) => {
     context.fillText(`${getData.length} data points`, 140, 1994);
   };
 
+  const getClusterDist = () => {
+    const input = document.getElementById("clusterDistInput");
+    if (input == null) {
+      console.log("is null");
+      return 1;
+    }
+    if (isNaN(input.value)) {
+      console.log("is nan");
+      return 1;
+    }
+
+    return input.value;
+  };
+
   const processSpawnPoints = () => {
     // without 'cloning' array, modifying getData directly will not cause rerender and could cause stale data to be displayed in the future? depending on if it's used elsewhere
     let data = getData.slice();
@@ -49,7 +63,8 @@ const MapDisplay = (map) => {
     let avg = [];
     let comparer = data[0];
     let cluster = [data[0]];
-
+    const dist = getClusterDist();
+    console.log(`cluster distance : ${dist}`);
     let j = 0;
     while (data.length > 0) {
       if (data.length == 1) {
@@ -57,16 +72,14 @@ const MapDisplay = (map) => {
       }
 
       j++;
-      //console.log(j);
-      if (j > 70) break;
+      //console.log(j); //wtf was j used for again? lmao. capping loop while testing?
+      //if (j > 70) break;
 
       for (let i = 1; i < data.length; i++) {
-        if (j > 70) break;
+        //if (j > 70) break;
 
-        if (Math.abs(data[i].position.x - comparer.position.x) <= clusterDist) {
-          if (
-            Math.abs(data[i].position.y - comparer.position.y) <= clusterDist
-          ) {
+        if (Math.abs(data[i].position.x - comparer.position.x) <= dist) {
+          if (Math.abs(data[i].position.y - comparer.position.y) <= dist) {
             cluster.push(data[i]);
           } else {
             remaining.push(data[i]);
@@ -185,10 +198,7 @@ const MapDisplay = (map) => {
     context.fillStyle = `rgba(45, 42, 136, 0.85)`; // blue
     context.font = "bold 50px roboto mono";
 
-    let name = map.name.split("_").join(" ");
-    if (name === "The Raktika Greatwood") name = "The Rak'tika Greatwood";
-    if (name === "Kozamauka") name = "Kozama'uka";
-    if (name === "Yak Tel") name = "Yak T'el";
+    let name = getMapName();
 
     context.fillText(name, 1550, 80);
     await fetchData();
@@ -215,13 +225,14 @@ const MapDisplay = (map) => {
 
     const coordsDiv = document.getElementById("map-coordinates");
     coordsDiv.style.position = "absolute";
-    coordsDiv.style.top = `${e.pageY - 40}px`;
+    coordsDiv.style.top = `${e.pageY + 40}px`;
     coordsDiv.style.left = `${e.pageX - 50}px`;
   };
 
   //todo maybe make a button that can save all images?
   // in prev component, would require processing all data earlier.
   const saveImage = () => {
+    let name = getMapName();
     const canvas = document.getElementById("map-canvas");
     //opens in new tab
     //window.open(canvas.toDataURL("image/jpg"));
@@ -229,7 +240,7 @@ const MapDisplay = (map) => {
     var pic = canvas.toDataURL("jpg");
     var a = document.createElement("a");
     a.href = pic;
-    a.download = `${map.name}-data.jpg`;
+    a.download = `${name}-data.jpg`;
     a.click();
   };
 
@@ -237,9 +248,19 @@ const MapDisplay = (map) => {
     console.log(getData);
   };
 
+  const getMapName = () => {
+    let name = map.name.split("_").join(" ");
+    if (name === "The Raktika Greatwood") name = "The Rak'tika Greatwood";
+    if (name === "Kozamauka") name = "Kozama'uka";
+    if (name === "Yak Tel") name = "Yak T'el";
+    return name;
+  };
+
   const copyAvgAsJson = () => {
     const averagedCoords = getAvg;
-    let json = `{"MapName": "${map.name.split("_").join(" ")}",
+    const mapName = getMapName();
+
+    let json = `{"MapName": "${mapName}",
     "MapID": ${map.id},
     "Positions": [`;
     for (let i = 0; i < averagedCoords.length; i++) {
@@ -260,7 +281,18 @@ const MapDisplay = (map) => {
     return (
       <div id="map-image-div">
         <div id="map-top-bar">
-          displaying selected map image: {map.name}
+          displaying selected map image: {getMapName()}
+          <label htmlFor="clusterDistInput">
+            cluster dist : {`${combine}`}
+          </label>
+          <input
+            type="number"
+            size={5}
+            placeholder="1"
+            step="0.05"
+            defaultValue="1"
+            id="clusterDistInput"
+          ></input>
           <button onClick={copyAvgAsJson}>to hh json</button>
           <button
             onClick={() => {
