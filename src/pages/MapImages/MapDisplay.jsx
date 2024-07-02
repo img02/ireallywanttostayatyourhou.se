@@ -232,7 +232,7 @@ const MapDisplay = (map) => {
   //todo maybe make a button that can save all images?
   // in prev component, would require processing all data earlier.
   const saveImage = () => {
-    let name = getMapName();
+    let name = getMapName().replace(" ", "_");
     const canvas = document.getElementById("map-canvas");
     //opens in new tab
     //window.open(canvas.toDataURL("image/jpg"));
